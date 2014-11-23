@@ -36,9 +36,12 @@ function onReady() {
                     lng: Number(camera.location.longitude)
                 };
                 //create a marker on the map
+                var image = 'img/uw-marker.png'
                 var marker = new google.maps.Marker({
                     position: position,
-                    map: map
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    icon: image
                 });
 
                 //listen for click event on marker
@@ -46,6 +49,11 @@ function onReady() {
                     map.panTo(marker.getPosition());
                     var html = '<p>' + camera.cameralabel + '</p>';
                     html += '<img src="' + camera.imageurl.url + '"/>';
+
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                    window.setTimeout(function () {
+                        marker.setAnimation(null);
+                    }, 2000);
 
                     cameraInfoWindow.setContent(html);
 
@@ -64,6 +72,7 @@ function onReady() {
                         marker.setMap(map);
                     }
                 });
+
             });
         })
         .fail(function (error) {
@@ -75,7 +84,18 @@ function onReady() {
             //called on either success or error cases
         });
 
-    
+    onResize();
+    $(window).resize(onResize);
+
+    function onResize() {
+        var mapDiv = $('#map');
+        var rightHeight = $(window).height() - mapDiv.position().top - 20;
+        mapDiv.css('height', rightHeight);
+    }
+
+    google.maps.event.addListener(map, 'click', function () {
+        cameraInfoWindow.close();
+    });
 }
 
 $(document).ready(onReady);
