@@ -17,8 +17,6 @@ function onReady() {
         zoom: 12
     };
 
-    //element inside which the map should appear
-    //usually just a <div> somewhere on the page
     var mapElem = document.getElementById('map');
 
     //create the map
@@ -84,6 +82,7 @@ function onReady() {
             //called on either success or error cases
         });
 
+    // resize based on the browser's height
     onResize();
     $(window).resize(onResize);
 
