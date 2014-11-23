@@ -52,6 +52,18 @@ function onReady() {
                     //open it on the map, anchored to a marker
                     cameraInfoWindow.open(map, marker);
                 })
+
+                $("#search").bind("search keyup", function () {
+                    console.log("searching: " + this.value);
+                    if (camera.cameralabel.toLowerCase().indexOf(this.value.toLowerCase()) < 0) {
+                        //remove marker from the map
+                        marker.setMap(null);
+                    } else {
+                        //marker still exists in memory and can be added to the
+                        //map again by calling setMap passing a valid map
+                        marker.setMap(map);
+                    }
+                });
             });
         })
         .fail(function (error) {
@@ -62,6 +74,8 @@ function onReady() {
             //just like finally() from Angular
             //called on either success or error cases
         });
+
+    
 }
 
 $(document).ready(onReady);
